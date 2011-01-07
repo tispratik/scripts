@@ -1,0 +1,2 @@
+/* Search for a file name inside a jar file */
+find . -name \*jar -print -exec jar -tvf {} \; | nawk '/YOURSEARCHSTRING/ || /jar/ {print} '
