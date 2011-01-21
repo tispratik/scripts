@@ -8,7 +8,7 @@
 # sudo apt-get install graphviz
 
 for ii in $(  dpkg -l | awk '{print $2}' ); do
-          apt-rdepends -d $ii > $ii.dotty
-          dot -Gratio=auto -Tgif -o $ii-dependency.gif $ii.dotty
-          rm -f $ii.dotty
+  apt-rdepends -d $ii > $ii.dotty
+  dot -Gratio=auto -Tgif -o $ii-dependency.gif $ii.dotty
+  rm -f $ii.dotty
 done
