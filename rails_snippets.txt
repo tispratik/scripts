@@ -1,0 +1,25 @@
+# =======================================================================================================================
+# Inspect and test routes in console (Rails 3)
+# =======================================================================================================================
+
+r = Rails.application.routes
+## MyApp::Application.routes does the same thing
+
+# list all
+r.routes.each { |x| puts x }
+
+# inspect parts:
+r1 = r.routes.first
+ => GET    areas:format                         {:action=>"index", :controller=>"areas"} 
+r1.path
+ => "/areas(.:format)" 
+r1.requirements
+ => {:action=>"index", :controller=>"areas"} 
+r1.verb
+ => "GET"
+
+# test routes with:
+r.recognize_path('/users')
+=> {:action=>"index", :controller=>"users"}
+
+#=======================================================================================================================
