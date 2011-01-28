@@ -10,6 +10,12 @@
 
   for i in `git status | grep deleted | awk '{print $3}'`; do git rm $i; done
 
+# -----------------------------------------------------------------------------------------------------------------------
+  another way
+# -----------------------------------------------------------------------------------------------------------------------
+
+  git rm $(git ls-files -d)
+
 # =======================================================================================================================
   git difference between a branch and current branch
 # =======================================================================================================================
@@ -73,5 +79,21 @@
 
   # replant the master branch onto the corrected merge
   git rebase <sha1-of-merge>
+
+# =======================================================================================================================
+  Make a tarball of only the changed directories in a git repos, since last tag.
+# =======================================================================================================================
+
+  tar -czf {tagname_next}.tar.gz `git diff --name-only {tagname_previous}`
+
+# =======================================================================================================================
+  Push to Remote Repository on Every Git Commit
+# =======================================================================================================================
+  
+  URL: http://errtheblog.com/posts/89-huba-huba
+  Do this from inside a Git repository, and it will do a 'git push' every time you do a 'git commit'.
+  This defeats a bit of the purpose of having a distributed SCM, but it's good for certain situations.
+
+  echo 'git push' > .git/hooks/post-commit
 
 # =======================================================================================================================
