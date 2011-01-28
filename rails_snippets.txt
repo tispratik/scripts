@@ -22,4 +22,15 @@ r1.verb
 r.recognize_path('/users')
 => {:action=>"index", :controller=>"users"}
 
+# =======================================================================================================================
+# Generating Rdocs for Installed Gems
+# =======================================================================================================================
+
+"rdoc" -- Generate the RDoc files for an installed gem
+
+gem rdoc will generate the RDoc files for an installed gem.
+The files are put in the standard gem RDoc location so that gem_server can find them.
+
+Usage: gem rdoc [args] [options]
+
 #=======================================================================================================================
