@@ -1,5 +1,45 @@
+###################
+Find
+###################
+
 /* Search for a file name inside a jar file */
 find . -name \*jar -print -exec jar -tvf {} \; | nawk '/YOURSEARCHSTRING/ || /jar/ {print} '
 
+###################
+Crontab
+###################
+
 /* My Crontab Entry */
 */10 * * * * DISPLAY=:0.0 notify-send -t 10000 "10-10-10 Principle" "Please stop staring at the monitor so hard !!! Your eyes are gonna suck!"
+
+###################
+apt-get
+###################
+
+# Remove unused libs/packages in debian-based distros
+apt-get remove `deborphan`
+
+# Remove all unused kernels with apt-get
+dpkg -l 'linux-*' | sed '/^ii/!d;/'"$(uname -r | sed "s/\(.*\)-\([^0-9]\+\)/\1/")"'/d;s/^[^ ]* [^ ]* \([^ ]*\).*/\1/;/[0-9]/!d' | xargs sudo apt-get -y purge
+# will purge:
+# only installed apps: /^ii/!d
+# avoiding current kernel stuff: /'"$(uname -r | sed "s/\(.*\)-\([^0-9]\+\)/\1/")"'/d
+# using app names: s/^[^ ]* [^ ]* \([^ ]*\).*/\1/
+# avoiding stuff without a version number: /[0-9]/!d
+
+# List available upgrades from apt without upgrading the system
+apt-get --just-print upgrade
+
+###################
+Other
+###################
+
+# Print all environment variables, including hidden ones
+for _a in {A..Z} {a..z};do _z=\${!${_a}*};for _i in `eval echo "${_z}"`;do echo -e "$_i: ${!_i}";done;done|cat -Tsv
+
+# Reading nic's mac address
+# This command is useful when you want to check your nic's mac address, if you're interested in your wireless interface, use its ID instead "eth".
+ifconfig | grep eth | awk '{print $5}'
+
+# Console clock
+while sleep 1;do tput sc;tput cup 0 $(($(tput cols)-29));date;tput rc;done &
