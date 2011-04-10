@@ -1,0 +1,34 @@
+upstream unicorn_server {
+  # This is the socket we configured in unicorn.rb
+  server unix:/home/<deployment_user>/public_html/domain1/current/tmp/sockets/unicorn.sock »
+  fail_timeout=0;
+}
+
+server {
+  listen 80;
+  client_max_body_size 4G;
+  server_name _;
+
+  keepalive_timeout 5;
+
+  # Location of our static files
+  root /home/<deployment_user>/public_html/domain1/current/public;
+
+  location / {
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $http_host;
+    proxy_redirect off;
+
+    # If you don't find the filename in the static files
+    # Then request it from the unicorn server
+    if (!-f $request_filename) {
+      proxy_pass http://unicorn_server;
+      break;
+    }
+  }
+
+  error_page 500 502 503 504 /500.html;
+  location = /500.html {
+    root /home/<deployment_user>/public_html/domain1/current/public;
+  }
+}
