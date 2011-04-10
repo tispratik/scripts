@@ -1,6 +1,6 @@
 upstream unicorn_server {
   # This is the socket we configured in unicorn.rb
-  server unix:/home/<deployment_user>/public_html/domain1/current/tmp/sockets/unicorn.sock »
+  server unix:/home/<deployment_user>/public_html/<app_name>/current/tmp/sockets/unicorn.sock »
   fail_timeout=0;
 }
 
@@ -12,7 +12,7 @@ server {
   keepalive_timeout 5;
 
   # Location of our static files
-  root /home/<deployment_user>/public_html/domain1/current/public;
+  root /home/<deployment_user>/public_html/<app_name>/current/public;
 
   location / {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -29,6 +29,6 @@ server {
 
   error_page 500 502 503 504 /500.html;
   location = /500.html {
-    root /home/<deployment_user>/public_html/domain1/current/public;
+    root /home/<deployment_user>/public_html/<app_name>/current/public;
   }
 }
