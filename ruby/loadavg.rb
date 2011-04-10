@@ -1,4 +1,4 @@
-#!/home/pratik/.rvm/rubies/ruby-1.9.2-p136/bin/ruby
+#!/usr/local/bin/ruby
 # uptime.rb taken from http://raspen.org/dynamic-shell-prompt/
 
 # $ cat /proc/loadavg
