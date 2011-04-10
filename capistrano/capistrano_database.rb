@@ -16,7 +16,7 @@ base: &base
   adapter: mysql
   timeout: 5000
 production:
-  database: #{application}_test
+  database: #{application}_production
   username: #{db_username}
   password: #{db_password}
   <<: *base
