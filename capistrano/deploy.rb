@@ -14,7 +14,7 @@ require "./config/capistrano_database"
 
 # Application Details
 set :application, "<app_name>"
-set :domain, "example.com"
+set :domain, "<app_name>.com"
 
 # Server Roles 
 role :app, domain.to_s 
@@ -32,7 +32,7 @@ default_run_options[:pty] = true
 # Repo Details
 set :scm, :git
 #set :scm_username, "my_github_user@gmail.com"
-set :repository, "git@myserver.com:<app_name>"
+set :repository, "git@my-server.com:<app_name>"
 set :branch, "master"
 
 set :deploy_to, "/home/#{user}/public_html/#{application}"	# The path on the servers we’re going to be deploying the application to.
@@ -42,8 +42,53 @@ set :deploy_via, :copy
 
 set :keep_releases, 3 unless exists?(:keep_releases)
 
+#=========================================================================================================================================================
+
+#---Unicorn---#
+set :server_type, :unicorn unless exists?(:server_type) 
+
+namespace :unicorn do
+  desc "Start Unicorn"
+  task :start, :roles => :app, :except => { :no_release => true } do 
+    run "cd #{current_path} && bundler exec unicorn_rails -c #{current_path}/config/unicorn.rb -E #{rails_env} -D"
+  end
+  desc "Stop Unicorn"
+  task :stop, :roles => :app, :except => { :no_release => true } do 
+    run "#{try_sudo} kill `cat #{unicorn_pid}`"
+  end
+  desc "Gracefully stop Unicorn"
+  task :graceful_stop, :roles => :app, :except => { :no_release => true } do
+    run "#{try_sudo} kill -s QUIT `cat #{unicorn_pid}`"
+  end
+  desc "Reload Unicorn"
+  task :reload, :roles => :app, :except => { :no_release => true } do
+    run "#{try_sudo} kill -s USR2 `cat #{unicorn_pid}`"
+  end
+  desc "Restart Unicorn"
+  task :restart, :roles => :app, :except => { :no_release => true } do
+    stop
+    start
+  end
+
+  after "deploy:restart", "unicorn:reload"
+end
+#---Unicorn---#
+
+#---Magic---#
+namespace :deploy do 
+  %w(start stop restart).each do |action| 
+    desc "#{action} our server" 
+    task action.to_sym do 
+      find_and_execute_task("#{server_type}:#{action}") 
+    end 
+  end
+end
+#---Magic---#
+
+#---Custom---#
 namespace :log do
   task :prod do
     run "tail -n 200 -f #{shared_path}/log/production.log"
   end
 end
+#---Custom---#
