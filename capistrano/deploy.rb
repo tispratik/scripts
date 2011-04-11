@@ -46,11 +46,13 @@ set :keep_releases, 3 unless exists?(:keep_releases)
 
 #---Unicorn---#
 set :server_type, :unicorn unless exists?(:server_type) 
+set :unicorn_pid, "#{current_path}/tmp/pids/unicorn.pid"
+set :unicorn_config, "#{current_path}/config/unicorn.rb"
 
 namespace :unicorn do
   desc "Start Unicorn"
   task :start, :roles => :app, :except => { :no_release => true } do 
-    run "cd #{current_path} && bundle exec unicorn_rails -c #{current_path}/config/unicorn.rb -E production -D"
+    run "cd #{current_path} && bundle exec unicorn_rails -c #{unicorn_config} -E production -D"
   end
   desc "Stop Unicorn"
   task :stop, :roles => :app, :except => { :no_release => true } do 
