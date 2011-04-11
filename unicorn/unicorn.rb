@@ -1,4 +1,4 @@
-APP_PATH = "/home/deploy/public_html/coeditr"
+APP_PATH = "/home/<deployment_user>/public_html/<app_name>"
 
 # unicorn_rails -c config/unicorn.rb -E production -D
 rails_env = ENV['RAILS_ENV'] || 'production'
