@@ -3,7 +3,7 @@ $:.unshift(File.expand_path("~/.rvm/lib"))
 require 'rvm/capistrano'
 
 set :rvm_ruby_string, '1.9.2@<app_name>'	# Required so that RVM finds bundler gem in the environment and bundler installs them to that gemset
-set :rvm_type, :user # :system or :user – user looks for rvm in $HOME/.rvm where as system uses the /usr/local as set for system wide installs.
+set :rvm_type, :user 			# :system or :user – user looks for rvm in $HOME/.rvm where as system uses the /usr/local as set for system wide installs.
 
 # Bundler Bootstrap
 require 'bundler/capistrano'
@@ -31,8 +31,8 @@ default_run_options[:pty] = true
 
 # Repo Details
 set :scm, :git
-#set :scm_username, "my_github_user@gmail.com"
-set :repository, "git@my-server.com:<app_name>"
+#set :scm_username, "githubuser@gmail.com"
+set :repository, "git@server.com:<app_name>"
 set :branch, "master"
 
 set :deploy_to, "/home/#{user}/public_html/#{application}"	# The path on the servers we’re going to be deploying the application to.
@@ -50,7 +50,7 @@ set :server_type, :unicorn unless exists?(:server_type)
 namespace :unicorn do
   desc "Start Unicorn"
   task :start, :roles => :app, :except => { :no_release => true } do 
-    run "cd #{current_path} && bundler exec unicorn_rails -c #{current_path}/config/unicorn.rb -E #{rails_env} -D"
+    run "cd #{current_path} && bundle exec unicorn_rails -c #{current_path}/config/unicorn.rb -E production -D"
   end
   desc "Stop Unicorn"
   task :stop, :roles => :app, :except => { :no_release => true } do 

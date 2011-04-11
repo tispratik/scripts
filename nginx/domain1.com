@@ -1,6 +1,6 @@
 upstream unicorn_server {
   # This is the socket we configured in unicorn.rb
-  server unix:/home/<deployment_user>/public_html/<app_name>/current/tmp/sockets/unicorn.sock »
+  server unix:/home/<deployment_user>/public_html/<app_name>/current/tmp/sockets/unicorn.sock
   fail_timeout=0;
 }
 
