@@ -15,6 +15,9 @@ Capistrano::Configuration.instance.load do
 base: &base
   adapter: mysql
   timeout: 5000
+  collation: utf8_general_ci
+  encoding: utf8
+  host: 127.0.0.1
 production:
   database: #{application}_production
   username: #{db_username}
