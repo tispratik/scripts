@@ -15,6 +15,8 @@ Crontab
 /* Reminder for rent payment */
 01 * 27-31 * * DISPLAY=:0.0 notify-send -t 10000 "Rent Payment" "Please pay rent soon, the time is running out!"
 
+/* Play a program everyday at a given time */
+5 7 * * 0-6 env DISPLAY=:0 /usr/bin/chromium-browser http://www.youtube.com/watch?v=O8tJCTgkwQQ &> /home/pratik/cron.log
 
 ###################
 apt-get
