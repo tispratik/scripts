@@ -1,0 +1,31 @@
+<VirtualHost *:80>
+  ServerName blah
+  ServerAlias blah
+
+  DocumentRoot /home/rails/public_html/<my_app>/current/public
+
+  RewriteEngine On
+
+  <Proxy balancer://unicornservers>
+    BalancerMember http://127.0.0.1:8080
+  </Proxy>
+
+  # Redirect all non-static requests to unicorn
+  RewriteCond %{DOCUMENT_ROOT}/%{REQUEST_FILENAME} !-f
+  RewriteRule ^/(.*)$ balancer://unicornservers%{REQUEST_URI} [P,QSA,L]
+
+  ProxyPass / balancer://unicornservers/
+  ProxyPassReverse / balancer://unicornservers/
+  ProxyPreserveHost on
+
+  <Proxy *>
+    Order deny,allow
+    Allow from all
+  </Proxy>
+
+  # Custom log file locations
+  ErrorLog  /home/rails/public_html/<my_app>/current/log/error.log
+  CustomLog /home/rails/public_html/<my_app>/current/log/access.log combined
+
+</VirtualHost>
+
