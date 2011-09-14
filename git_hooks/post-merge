@@ -1,0 +1,6 @@
+#!/bin/bash
+if [ ! -z `git diff --name-only HEAD@{1}..HEAD Gemfile` ]
+then
+  echo -e "\033[0;31m*** Gemfile change detected, running bundle install ***\033[0m"
+  bundle install
+fi
